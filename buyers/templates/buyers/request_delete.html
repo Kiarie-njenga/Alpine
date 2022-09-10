@@ -1,0 +1,20 @@
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% block content %}
+{% block title %}<title>Delete Request</title>{% endblock %}
+{% include 'nav.html' %}
+<div class="container p-3"style="background-color: white;" >
+    <h1>Delete</h1>
+    <form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete {{ buyerrequest.title }}</p>
+    <button class="btn btn-danger ml-1" type="submit">Confirm</button>
+    </form>
+</div>
+
+{% endblock content %}

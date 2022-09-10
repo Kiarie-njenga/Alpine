@@ -1,0 +1,25 @@
+
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% block title %}<title>Edit Request</title>{% endblock %}
+{% block content %}
+{% include 'nav.html' %}
+<div class="container p-2" style="background-color: white;">
+    <h1>Edit</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="image-box" style='width:300px;height:300px' class="image-container"></div>
+        <button class="btn btn-green" id="crop-btn" style="margin-top:3px;display:none;" type="button">Crop</button>
+        <button type="submit" id="confirm-btn" class="btn  btn-success">Edit</button>
+    </form>
+</div>
+
+
+{% endblock content %}

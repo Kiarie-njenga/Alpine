@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+
+{% include 'nav.html' %}
+    <div class="container  bg-light">
+        <div>
+            <h2>Edit your order and refine to specific details to ensure smooth delivery</h2>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy  }}
+            <button type="submit" class="btn mb-4 btn-info">Edit</button>
+        </form>
+    </div>
+  
+  
+
+
+{% endblock %}

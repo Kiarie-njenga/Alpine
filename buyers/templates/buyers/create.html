@@ -1,0 +1,27 @@
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+
+{% block title %}<title>Add Request</title>{% endblock title %}
+{% block content %}
+{% include 'nav.html' %}
+<div class="container p-3"style="background-color: white;" >
+    <div>
+        <h1>Add Request</h1>
+    </div>
+    <form method="post" action="{% url 'create_request' %}"  enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div id="image-box" style="width:400px;height:400px;" class="image-container"></div>
+        <button class="btn btn-green" id="crop-btn" style="margin-top:3px;display:none;" type="button">Crop</button>
+        <button type="submit" id="confirm-btn" class="btn btn-success">Post</button>
+    </form>
+</div>
+
+
+{% endblock content %}

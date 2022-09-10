@@ -1,0 +1,141 @@
+
+
+
+
+
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+<title>{{ product.name }}</title>
+{% endblock %}
+{% block content %}
+<nav class="navbar bg-light  fixed-top">
+  <div class="container-fluid">
+    <div class="d-flex">
+      <a class="navbar-brand text-dark"  href="{% url 'shop:product_list' %}">Alpine</a>
+    
+      <form class="d-flex" action="{% url 'shop:menu_search' %}">
+        <input class="form-control rounded-pill me-2" name="q"  type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-green rounded-circle"  value="{{request.GET.q}}" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+
+      <button class="navbar-toggler-sm mx-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="d-flex">
+      
+        <a class="nav-link" onclick="clickSingleB(this)" href="{% url 'shop:product_list' %}" aria-current="page"><i class="bi bi-house-fill"></i></a>
+      
+      
+        <a class="nav-link" onclick="clickSingleB(this)" href="{% url 'profiles:profile' user.profile.pk %}"><i class="bi bi-person-fill"></i></a>
+      
+      
+        <a class="nav-link" onclick="clickSingleB(this)" href="#"><i class="bi bi-chat-dots-fill"></i></a>
+      
+      
+        <a class="nav-link" href="#"><i class="bi bi-bell-fill"></i></a>
+      
+      
+        <a class="nav-link" href="{% url 'cart:cart_detail' %}"><i class="bi bi-cart-fill"></i></a>
+      
+    </div>
+    
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Category
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'shop:product_list' %}">All</a></li>
+              {% for c in categories %}
+              <li><a class="dropdown-item" href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+              {% endfor %}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              
+            </ul>
+          </li>
+          <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card shadow-sm">
+              <div class="card-header d-flex">
+                
+                <a href="{% url 'profiles:profile' product.author.profile.pk %}" class="text-decoration-none"><img src="{{ product.author.profile.pic.url }}" alt="Image" class="rounded-circle" width="50px" height="50px"></a> <p class="fw-bold">{{product.author}}</p>
+                {{product.created|timesince}}
+                
+              </div>
+              
+              <div class="card-body">
+                <img src="{{ product.image.url }}" alt="{{product.name}}" class="img-fluid">
+              </div>
+            
+            </div>
+          </div>
+          <div class="col-md-6 bg-light">
+            <h2 class="text-black mr-2">{{ product.name }}</h2>
+            <div class="d-flex flex-row">
+              <form method="post" action="{% url 'shop:add_like' product.pk %}">
+                {% csrf_token %}
+                
+                <button type="submit" style="background-color:transparent;" class="border-0 {% if liked %}bg-success{% endif %}"><i class="bi bi-hand-thumbs-up"></i></button>{{total_likes}}
+              </form>
+              <form method="post" action="{% url 'shop:dis_like' product.pk %}">
+               {% csrf_token %}
+               
+                <button type="submit" class="border-0" style="background-color:transparent;">{% if disliked %}<i class="bi bi-hand-thumbs-down-fill"></i>{% else %}<i class="bi bi-hand-thumbs-down"></i>{% endif %}</button>{{total_dislikes}}
+             </form>
+            </div>
+            
+              <p>{{ product.description|linebreaks }}</p>
+            
+            
+            <div class="d-flex col-5 justify-content-between">
+              {% if request.user == product.author %}
+              <a href="{% url 'shop:edit_product' product.pk %}" class="btn btn-green"><i class="bi bi-pencil-square"></i></a>
+              <a href="{% url 'shop:delete_product' product.pk %}" class="btn btn-Danger"><i class="bi bi-trash-fill"></i></a>
+              {% endif %}
+            </div>
+            <div class="mt-5 col">
+              <form action="{% url 'cart:cart_add' product.id  %}" method="post">
+                {% csrf_token %}
+                <div class="col-3 col-md-5">
+                  {{ cart_product_form|crispy }}
+                </div>
+                <div class="d-flex mt-3 justify-content-between">
+                  <p class=""><strong class="h4">${{ product.price }}</strong></p>
+                  <button type="submit" class="buy-now btn btn-sm btn-green"><i class='bi bi-cart-check-fill'></i> Add to cart</button>
+                </div>
+              </form>
+              
+              
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    
+{% endblock %}

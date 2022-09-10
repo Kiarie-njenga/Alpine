@@ -1,0 +1,13 @@
+{% for buyerrequest in buyerrequests %}
+        <div class="item">
+            <div class="card">
+              <a href="{% url 'request_detail' buyerrequest.pk %}"><img src="{{buyerrequest.pic.url}}" alt="{{buyerrequest.title}}" class="card-img"/></a> 
+              <div class="card-body card-body-user fw-bold">
+                <p class="user-text fw-bold">{{buyerrequest.user|truncatechars:13}}</p>
+                
+              </div>
+            </div>
+            
+        </div>
+        <!--item ends-->
+        {% endfor %}

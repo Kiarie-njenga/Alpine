@@ -1,0 +1,43 @@
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% block content %}
+<div class="row" id="product-home">
+    {% for product in products %}
+      <div class="col-sm-12 col-md-6 col-lg-3" >
+          <a href="{% url 'shop:product_detail' product.pk %}" class=" text-decoration-none text-dark">
+            <div class="card shadow mb-2 mx-0 card-product">
+              <img src="{{product.image.url}}" alt="{{product.name}}" class="card-img-top"/>
+              <div class="card-body">
+                {{product.category}}
+                <p class="fw-bold">{{product.name}}</p>
+                <div class="">
+                  <p class="fw-bolder"><i class="bi bi-tag-fill text-success"></i> {{product.price}}</p>
+                 <p>per {{product.units}}</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+    {% endfor %}
+    
+    
+</div>
+<div class="row rounded bg-light">
+  <div class="d-flex justify-content-center">
+    {% if products.has_previous %} 
+    <a href="?page=1">&laquo</a>
+    <a href="?page={{products.previous_page_number}}">&#8249</a>
+    {% endif %}
+    Page {{products.number}}
+    {% if products.has_next %}
+        <a href="?page={{products.next_page_number}}">&#8250</a>
+        <a href="?page={{products.paginator.num_pages}}">&raquo</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

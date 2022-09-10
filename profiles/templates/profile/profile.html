@@ -1,0 +1,221 @@
+
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+
+{% block title %}<title>Profile</title>{% endblock title %}
+{% block content %}
+
+{% include 'nav.html' %}
+    
+        <div class="container" style="background-color:#D3D3D3">
+            <div class="row">
+                <div class="col-md-4 border  pt-1 bg-success  rounded mt-2 shadow-sm" style="height:800px;overflow:auto;">
+                    <div class='text-center'>
+                        <img src="{{profile.pic.url}}" class=" border border-3 text-center rounded-circle" style="width:150px;height:150px;object-fit: cover;" />
+                    </div>
+                    <div class="col-sm text-center">
+                        <strong>{{profile.user}}</strong><br/>
+                                {{total_orders}} Orders
+                    </div>
+                    {% if request.user == profile.user %}
+                    <div class="col-sm">
+                        <a href="{% url 'profiles:profile_edit' profile.pk %}"  class="btn mt-2 btn-fill btn-outline-light"><i class="bi bi-pencil-square"></i>Edit</a>
+                        <a href="{% url 'profiles:sent_orders'  %}"  class="btn mt-2 btn-fill btn-outline-light ">Orders</a>
+                    </div> 
+                    {% endif %}
+                    <a href=""  class="btn mt-2 btn-fill btn-outline-light ">message</a>
+                    <div class="col-sm"> 
+                        <div class="card p-1 mt-2 mb-2 shadow-sm">
+                            
+                            <p><i class="bi bi-house-fill"></i> Lives in <strong>{{profile.location}}</strong></p>
+                            <p><i class="bi bi-calendar2-heart"></i>{{profile.date_of_birth}}</p>
+                            <p><i class="bi bi-bank2"></i>Profile type <strong>{{profile.what_describes_you}}</strong></p>
+                            {% if user.email %}
+                            <p><strong><i class="bi bi-envelope-fill"></i> Email </strong>{{user.email}}</p>
+                            {% endif %}
+                            {% if profile.phone %}
+                            <p class="bio"><strong>phone </strong>{{profile.phone}}</p>
+                            {% endif %}
+                            {% if profile.bio %}
+                            <p class="bio"><strong>Bio </strong>{{profile.bio}}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if owner %}
+                    <div class="row">
+                    <div class="col-sm" >
+                     <p class="fw-bold">Customers Orders both paid and unpaid</p>
+                        <p>Please deliver only paid deliveries!</p>
+                        
+        
+        
+                    <div class="table-responsive mb-4" style="height:400px;">
+                        <table class="table table-hover table-success  table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Adress</th>
+                                    <th>Postal Code</th>
+                                    <th>City</th>
+                                    <th>Paid</th>
+                                    <th>Date</th>
+                                    <th>Delivered</th>
+                            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td><a href="{% url 'profiles:profile_order_detail' order.pk %}">{{order.id}}</a></td>
+                                    <td>{{order.first_name}}</td>
+                                    <td>{{order.last_name}}</td>
+                                    <td>{{order.email}}</td>
+                                    <td>{{order.address}}</td>
+                                    <td>{{order.postal_code}}</td>
+                                    <td>{{order.city}}</td>
+                                    <td>{{order.paid}}</td>
+                                    <td>{{order.created}}</td>
+                                    <td>{{order.is_delivered}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+                {% endif %}
+                </div>
+                <div class="col-md-5" style="height:800px;overflow:auto;">
+                    
+                        <div class="row bg-light rounded p-2 mt-2 mb-4">
+                            <div class="d-flex justify-content-around">
+                              <ul class="nav nav-pills">
+                                  <li class="nav-item">
+                                      <a class="nav-link" data-bs-toggle="pill" href="#products">
+                                        Products
+                                      </a>
+                                  </li>
+                                  <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="pill" href="#blogs">
+                                      Blogs
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-bs-toggle="pill" href="#contracts">
+                                      Contracts
+                                    </a>
+                                </li>
+                              </ul>
+                            </div>
+                        </div>
+                    
+                    
+                    <div class="tab-content">
+                        
+                        <div class="tab-pane container active" id="products">
+                            {% for product in products %}
+                            <a href="{% url 'shop:product_detail' product.pk %}" class="text-decoration-none text-dark">
+                                <div class="card  shadow-sm my-2">
+                                    <div class="card-header">
+                                        <h4>{{product.name}}</h4>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        
+                                            <p class="ps-2">{{product.description}}</p>
+                                        
+                                        <img src="{{product.image.url}}" style="width:100%;height:350px;object-fit:cover;"/>
+                                    </div>
+                                    
+                                    <div class="card-footer">
+                                         Price <strong>{{product.price}}</strong>
+                                     
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </div>
+    
+                        <div class="tab-pane container fade" id="blogs">
+                            {% for blog in blogs %}
+                            
+                                <div class="col-12" >
+                                    <a href="{% url 'blog_detail' blog.pk %}" class=" text-decoration-none text-dark">
+                                      <div class="card shadow mb-2 mx-0">
+                                        
+                                        <div class="card-header">
+                                          <img src="{{blog.thumbnail.url}}" alt="{{blog.title}}" class="card-img-top"/>
+                                        </div>
+                                          <div class="card-body" style="overflow:hidden;">
+                                            <p><strong style="font-size:18px;" >{{blog.category}}</strong>-{{blog.created_on}}</p>
+                                            <h1 class="fw-bolder" style="font-size:18px;">{{blog.title|truncatewords:21}}</h1>
+                                            <p>{{blog.main_content|safe|truncatewords:20}}</p>
+                                          </div>
+                                          <div class="card-header d-flex">
+                                            
+                                            <a href="{% url 'profiles:profile' blog.author.profile.pk %}" class="text-decoration-none"><img src="{{ blog.author.profile.pic.url }}" alt="Image" class="rounded-circle" width="50px" height="50px"></a> <p class="fw-bold">{{blog.author}}</p>
+                                            
+                                            
+                                          </div>
+                                      </div>
+                                    </a>
+                                </div>
+                            
+                            {% endfor %}
+                        </div>
+    
+                        <div class="tab-pane container fade" id="contracts">
+                            {% for contract in contracts %}
+                                <div class="col-12" >
+                                    <a href="{% url 'contract:contract_detail' contract.pk %}" class=" text-decoration-none text-dark">
+                                      <div class="card shadow mb-2 mx-0"  style="height:400px;">
+                                        
+                                        <div class="card-header">
+                                          <p class="fw-bold">{{contract.title}}</p>
+                                        </div>
+                                          <div class="card-body" style="overflow:hidden;">
+                                            <p><strong>Cost</strong>: {{contract.payment_cost_details|truncatechars:20}}</p>
+                                            
+                                            <p><strong>Project-specifics</strong>: {{contract.project_specific_details|safe}}</p>
+                                          </div>
+                                          <div class="card-footer">
+                                            <button class="btn btn-success"><i class="bi bi-file-earmark-arrow-down"></i></button> {{contract.legal_disclaimers}}
+                                          </div>
+                                      </div>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    
+                </div>
+                <div class="col-sm-3">
+                    <div class="card bg-success">
+                        <div class="card-header">
+                            <h3>Total Revenue</h3>
+    
+                        </div>
+                        <div class="card-body">
+                            <p>{{total_rev}}</p>
+                            
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+    
+
+
+{% endblock content %}

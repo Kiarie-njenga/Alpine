@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==3.2.9"
+django-crispy-forms = "*"
+pillow = "*"
+django-ckeditor = "*"
+django-allauth = "*"
+django-debug-toolbar = "*"
+reportlab = "*"
+djangorestframework = "*"
+requests = "*"
+channels = "*"
+channels-redis = "*"
+psycopg2 = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"

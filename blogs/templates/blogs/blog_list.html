@@ -1,0 +1,44 @@
+
+
+
+
+
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}<title>Blogs</title>{% endblock %}
+{% block content %}
+
+<div class="row" id="product-home">
+  {% include 'nav.html' %}
+  <p class="fw-bold text-center">Blogs</p>
+  <form class="d-flex" action="{% url 'blog_search' %}">
+    <input class="form-control rounded-pill me-2" name="q"  type="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-success rounded-circle"  value="{{request.GET.q}}" type="submit"><i class="bi bi-search"></i></button>
+  </form>
+    {% for blog in blogs %}
+    
+      <div class="col-12 col-md-4" >
+        <a href="{% url 'blog_detail' blog.pk %}" class=" text-decoration-none text-dark">
+          <div class="card shadow mb-2 mx-0" style="height:70vh;" >
+            
+            
+              <img src="{{blog.thumbnail.url}}" alt="{{blog.title}}" class="c-i-t"/>
+            
+              
+                
+               
+                <div class="d-flex m-1">
+                  <a href="{% url 'profiles:profile' blog.author.profile.pk %}" class="text-decoration-none"><img src="{{ blog.author.profile.pic.url }}" alt="Image" class="rounded-circle" width="30px" height="30px"></a> <p class="ms-1 fw-bold">{{blog.title|truncatewords:8}}</p>
+                </div>
+                <p class="ms-1" style="font-size:14px;">{{blog.author}}</br>
+                {{blog.created_on|timesince}}</p>
+          </div>
+        </a>
+      </div>
+    
+    {% endfor %}
+</div>
+
+
+{% endblock %}

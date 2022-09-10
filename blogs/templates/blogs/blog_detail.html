@@ -1,0 +1,83 @@
+
+
+
+
+
+
+
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+<title>{{blog.title}}</title>
+{% endblock %}
+{% block content %}
+{% include 'nav.html' %}
+<div class="row">
+    <div class="col-md-8" >
+        <div class="card shadow">
+            <div class="card-header">
+
+                <h3>{{blog.title}}</h3>
+                <p><strong style="font-size:18px;" >{{blog.category}}</strong>-{{blog.created_on}}</p>
+                <div class="d-flex">
+                  <a href="{% url 'profiles:profile' blog.author.profile.pk %}" class="text-decoration-none"><img src="{{ blog.author.profile.pic.url }}" alt="Image" class="rounded-circle" width="50px" height="50px"></a> <p class="fw-bold">{{blog.author}}</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <p class='card-text'>{{blog.main_content|safe}}</p>
+            </div>
+            
+                
+                
+                    
+                    {% if files %}
+                    <a href="" class="btn  btn-success"><i class="bi bi-pencil-square"></i></a>
+                    
+                    {% endif %}
+                    {% if request.user == blog.author %}
+                    <a href="{% url 'edit_blog' blog.pk %}" class="btn  btn-success"><i class="bi bi-pencil-square"></i> Edit</a>
+                    <a href="{% url 'delete_blog' blog.pk %}" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Delete</a>
+                    {% endif %}
+                
+            
+        </div>
+    </div>
+    <div class="col-md-4" style="height:400px;overflow:auto;">
+        
+            <hr/>
+            <p class="fw-bold">Comments {% with total=comments.count %}{{total}}{% endwith %}</p>
+            <form method="post">
+              {% csrf_token %}
+              <div class="d-flex">
+                <div class=" pe-2"><img src="{{user.profile.pic.url}}" class="rounded-circle" width="35px" height="35px"/></div>
+                {{ form.as_p }}
+                <div class="ps-1"><button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button></div> 
+              </div>
+              
+            </form>
+            {% if comments %}
+            <div class="container">
+              {% for comment in comments %}
+              <div class="d-flex">
+                <div class="pe-2">
+                  <a href="{% url 'profiles:profile' comment.user.profile.pk %}"><img src="{{comment.user.profile.pic.url}}" class="rounded-circle" width="40px" height="40px"/></a>
+                </div>
+                <div>
+                  <p><strong>{{comment.user}}</strong> .{{comment.created_on|timesince|truncatechars:8}}</p>
+                  {{comment.body}}
+                  <hr/>
+                </div>
+                
+              </div>
+              
+              
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

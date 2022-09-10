@@ -1,0 +1,60 @@
+
+
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% block content %}
+{% include 'nav.html' %}
+<div class="container bg-light">
+
+    <div class="col-12">
+        <h1>Your sent Orders both paid and unpaid</h1>
+            <p>Contact the client on the best way of delivery giving specific details</p>
+    
+    
+    <div class="table-responsive">
+    <table class="table table-hover table-success  table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Adress</th>
+                <th>Postal Code</th>
+                <th>City</th>
+                <th>Paid</th>
+                <th>Date</th>
+                <th>Delivered</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><a href="{% url 'order:order_edit' order.pk %}">{{order.id}}</a></td>
+                <td>{{order.first_name}}</td>
+                <td>{{order.last_name}}</td>
+                <td>{{order.email}}</td>
+                <td>{{order.address}}</td>
+                <td>{{order.postal_code}}</td>
+                <td>{{order.city}}</td>
+                <td>{{order.paid}}</td>
+                <td>{{order.created}}</td>
+                
+                <td>{{order.is_delivered}}</td>
+                
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+</div>
+
+{% endblock %}

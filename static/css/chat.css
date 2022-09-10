@@ -1,0 +1,86 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.message {
+	color:  #ffffff;
+	width: 35%;
+	font-size:14px;
+	padding: 3px;
+	border-radius: 8px;
+	margin: 15px 0px;
+	font-family: 'Poppins', sans-serif;
+}
+
+
+.textInput {
+	border: none;
+	border-bottom: 2px solid #ddd;
+	line-height: 1.2rem;
+	transition: 0.3s;
+	margin-bottom: 40px;
+	width: 50%;
+}
+
+.textInput:focus {
+	outline: none;
+	border-bottom: 2px solid #333;
+	transition: 0.3s;
+}
+
+.button {
+	background-color: #ffffff;
+	color: #9a4ef1;
+	border: 0.16em solid #9a4ef1;
+	border-radius: 2em;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	transition: 0.3s;
+	width: 50%;
+}
+
+.button:hover {
+	background-color: #9a4ef1;
+	color: #ffffff;
+	transition: 0.3s;
+}
+
+.emptyText {
+	font-family: 'Work Sans', sans-serif;
+	font-size: 1.5rem;
+}
+
+
+
+.sender {
+	background-color: #71aeeb;
+	margin-left: auto;
+}
+
+.receiver {
+	background-color: #62bd56;
+}
+

@@ -1,0 +1,147 @@
+
+
+
+
+
+
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}<title>{{buyerrequest.title}}</title>{% endblock %}
+
+{% block content %}
+<nav class="navbar bg-light  fixed-top">
+  <div class="container-fluid">
+    <div class="d-flex">
+      <a class="navbar-brand text-dark"  href="{% url 'shop:product_list' %}">Alpine</a>
+    
+      <form class="d-flex" action="{% url 'shop:menu_search' %}">
+        <input class="form-control rounded-pill me-2" name="q"  type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-green rounded-circle"  value="{{request.GET.q}}" type="submit"><i class="bi bi-search"></i></button>
+      </form>
+
+      <button class="navbar-toggler-sm mx-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="d-flex">
+      
+        <a class="nav-link" onclick="clickSingleB(this)" href="{% url 'shop:product_list' %}" aria-current="page"><i class="bi bi-house-fill"></i></a>
+      
+      
+        <a class="nav-link" onclick="clickSingleB(this)" href="{% url 'profiles:profile' user.profile.pk %}"><i class="bi bi-person-fill"></i></a>
+      
+      
+        <a class="nav-link" onclick="clickSingleB(this)" href="#"><i class="bi bi-chat-dots-fill"></i></a>
+      
+      
+        <a class="nav-link" href="#"><i class="bi bi-bell-fill"></i></a>
+      
+      
+        <a class="nav-link" href="{% url 'cart:cart_detail' %}"><i class="bi bi-cart-fill"></i></a>
+      
+    </div>
+    
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="offcanvasNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Category
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="offcanvasNavbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'shop:product_list' %}">All</a></li>
+              {% for c in categories %}
+              <li><a class="dropdown-item" href="{{ c.get_absolute_url }}">{{c.name}}</a></li>
+              {% endfor %}
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              
+            </ul>
+          </li>
+          <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</nav>
+      
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card shadow-sm">
+              <div class="card-header d-flex">
+                
+                <a href="{% url 'profiles:profile' buyerrequest.user.profile.pk %}" class="text-decoration-none"><img src="{{ buyerrequest.user.profile.pic.url }}" alt="Image" class="rounded-circle" width="50px" height="50px"></a> <p class="fw-bold">{{buyerrequest.user}}</p>
+                {{buyerrequest.date|timesince}}
+                
+              </div>
+              
+              <div class="card-body">
+                <img src="{{ buyerrequest.pic.url }}" alt="{{buyerrequest.title}}" class="img-fluid">
+              </div>
+            
+            </div>
+          </div> 
+          <div class="col-md-6 bg-light">
+            <h2 class="text-black mr-2">{{ buyerrequest.title|title }}</h2>
+            <p>{{ buyerrequest.body|linebreaks }}</p>
+            <div class="d-flex col-5">
+              {% if request.user == buyerrequest.user %}
+              <div class="pe-2"><a href="{% url 'request_edit' buyerrequest.pk %}" class="btn btn-green"><i class="bi bi-pencil-square"></i></a></div>
+              <div class="ps-1"><a href="{% url 'request_delete' buyerrequest.pk %}" class="btn btn-Danger"><i class="bi bi-trash-fill"></i></a></div>
+              {% endif %}
+            </div>
+          </div>
+          
+            <div class="mt-1 col">
+              <hr/>
+              <p class="fw-bold">Comments {% with total=comments.count %}{{total}}{% endwith %}</p>
+              <form method="post">
+                {% csrf_token %}
+                <div class="d-flex">
+                  <div class=" pe-2"><img src="{{user.profile.pic.url}}" class="rounded-circle" width="35px" height="35px"/></div>
+                  {{ form.as_p }}
+                  <div class="ps-1"><button type="submit" class="btn btn-success"><i class="bi bi-send"></i></button></div> 
+                </div>
+                
+              </form>
+              {% if comments %}
+              <div class="container">
+                {% for comment in comments %}
+                <div class="d-flex">
+                  <div class="pe-2">
+                    <a href="{% url 'profiles:profile' comment.author.profile.pk %}"><img src="{{comment.author.profile.pic.url}}" class="rounded-circle" width="40px" height="40px"/></a>
+                  </div>
+                  <div>
+                    <p><strong>{{comment.author}}</strong> .{{comment.created_on|timesince|truncatechars:8}}</p>
+                    <p>{{comment.comment}}</p> 
+                    <hr/>
+                  </div>
+                  
+                </div>
+                
+                
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    
+{% endblock %}
